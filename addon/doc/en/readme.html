@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Simple Link Opener</title>
+</head>
+<body>
+<h1>Simple Link Opener</h1>
+<p>Author: Muteb Almarri</p>
+<p>Opens the links in the clipboard in your default browser with one gesture. There is no question about which browser to use.</p>
+
+<h2>Setting up the gesture</h2>
+<p>The command has no gesture until you assign one. Open the NVDA menu, then Preferences, then Input gestures. Find the "Simple Link Opener" category, choose the command that starts with "Pressed once, says the link in the clipboard", and press Add.</p>
+
+<h2>Pressing the gesture once</h2>
+<ul>
+<li>One link in the clipboard: NVDA says the link.</li>
+<li>Several links: NVDA says how many, for example "3 links".</li>
+<li>No link: NVDA says "No link in clipboard".</li>
+</ul>
+
+<h2>Pressing the gesture twice</h2>
+<ul>
+<li>One link in the clipboard: it opens in your default browser, and NVDA says "Opening link".</li>
+<li>Several links: a list of the links appears. Press Enter on a link to open that one. Or tab to the "Open N links" button, where N is the number of links, to open all of them. NVDA says, for example, "Opening 3 links". Press Escape to close the list without opening anything.</li>
+<li>No link: NVDA says "No link in clipboard".</li>
+</ul>
+
+<h2>Settings</h2>
+<p>Open the NVDA menu, then Preferences, then Settings, then the "Simple Link Opener" category. A group of checkboxes chooses which kinds of links are opened:</p>
+<ul>
+<li>Links starting with http:// (checked by default)</li>
+<li>Links starting with https:// (checked by default)</li>
+<li>Links starting with www., such as www.example.com (not checked by default). These links are opened with https:// added in front.</li>
+</ul>
+<p>The add-on does nothing on secure screens, such as the Windows sign-in screen.</p>
+</body>
+</html>
