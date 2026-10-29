@@ -5,6 +5,8 @@ import gui
 from gui import guiHelper
 import addonHandler
 
+from .linkFinder import displayLink
+
 addonHandler.initTranslation()
 
 OPEN_AFTER_CLOSE_DELAY_MS = 300
@@ -43,7 +45,8 @@ class LinksDialog(wx.Dialog):
 			# Translators: Label of the list of links in the clipboard.
 			_("&Links:"),
 			wx.ListBox,
-			choices=links,
+			# The list shows TeamTalk links without their passwords; the full links are opened.
+			choices=[displayLink(link) for link in links],
 			size=(550, 220),
 		)
 

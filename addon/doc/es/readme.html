@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Simple Link Opener</title>
+</head>
+<body>
+<h1>Simple Link Opener</h1>
+<p>Autor: Muteb Almarri</p>
+<p>Abre los enlaces del portapapeles en su navegador predeterminado con un solo gesto. No hay que elegir qué navegador usar.</p>
+
+<h2>Configurar el gesto</h2>
+<p>El comando no tiene ningún gesto hasta que usted le asigna uno. Abra el menú de NVDA, luego Preferencias y después Gestos de entrada. Busque la categoría "Simple Link Opener", elija el comando que empieza por "Pulsado una vez, dice el enlace del portapapeles" y pulse Añadir.</p>
+
+<h2>Pulsar el gesto una vez</h2>
+<ul>
+<li>Un enlace en el portapapeles: NVDA dice el enlace.</li>
+<li>Varios enlaces: NVDA dice cuántos hay, por ejemplo "3 enlaces".</li>
+<li>Ningún enlace: NVDA dice "No hay ningún enlace en el portapapeles".</li>
+</ul>
+
+<h2>Pulsar el gesto dos veces</h2>
+<ul>
+<li>Un enlace en el portapapeles: se abre en su navegador predeterminado y NVDA dice "Abriendo enlace".</li>
+<li>Varios enlaces: aparece una lista con los enlaces. Pulse Intro sobre un enlace para abrir solo ese. O vaya con el tabulador al botón "Abrir N enlaces", donde N es el número de enlaces, para abrirlos todos. NVDA dice, por ejemplo, "Abriendo 3 enlaces". Pulse Escape para cerrar la lista sin abrir nada.</li>
+<li>Ningún enlace: NVDA dice "No hay ningún enlace en el portapapeles".</li>
+</ul>
+
+<h2>Configuración</h2>
+<p>Abra el menú de NVDA, luego Preferencias, después Opciones y la categoría "Simple Link Opener". Un grupo de casillas de verificación elige qué tipos de enlaces se abren:</p>
+<ul>
+<li>Enlaces que empiezan por http:// (marcada por defecto)</li>
+<li>Enlaces que empiezan por https:// (marcada por defecto)</li>
+<li>Enlaces que empiezan por www., como www.example.com (no marcada por defecto). Estos enlaces se abren con https:// añadido delante.</li>
+<li>Enlaces de TeamTalk que empiezan por tt://, como tt://example.com?tcpport=10333 (no marcada por defecto). El cliente de TeamTalk abre estos enlaces.</li>
+</ul>
+<p>El complemento no hace nada en pantallas seguras, como la pantalla de inicio de sesión de Windows.</p>
+</body>
+</html>

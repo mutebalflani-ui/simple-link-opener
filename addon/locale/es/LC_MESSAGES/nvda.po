@@ -1,0 +1,95 @@
+# Spanish translation of Simple Link Opener.
+# Copyright (C) 2026 Muteb Almarri <mutebalflani@gmail.com>
+msgid ""
+msgstr ""
+"Project-Id-Version: simpleLinkOpener 1.0\n"
+"Report-Msgid-Bugs-To: mutebalflani@gmail.com\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. Announced when a link could not be opened. {link} is the link.
+msgid "Could not open {link}"
+msgstr "No se pudo abrir {link}"
+
+#. Asks before opening many links. {count} is the number of links.
+msgid "Open {count} links?"
+msgstr "¿Abrir {count} enlaces?"
+
+#. Title of the question that asks before opening many links.
+#. Category of the add-on's command in the Input gestures dialog.
+#. Title of the add-on's panel in NVDA settings.
+msgid "Simple Link Opener"
+msgstr "Simple Link Opener"
+
+#. Announced when one link is opened.
+msgid "Opening link"
+msgstr "Abriendo enlace"
+
+#. Announced when several links are opened. {count} is the number of links.
+msgid "Opening {count} links"
+msgstr "Abriendo {count} enlaces"
+
+#. Announced when the clipboard has links, but their kind is turned off in the settings.
+msgid "The links in the clipboard are of a kind turned off in the settings"
+msgstr "Los enlaces del portapapeles son de un tipo desactivado en la configuración"
+
+#. Announced when the clipboard has no link to open.
+msgid "No link in clipboard"
+msgstr "No hay ningún enlace en el portapapeles"
+
+#. Announced when the clipboard has several links. {count} is the number of links.
+msgid "{count} links"
+msgstr "{count} enlaces"
+
+#. Describes the command in the Input gestures dialog.
+msgid ""
+"Pressed once, says the link in the clipboard, or how many links there are. "
+"Pressed twice, opens the link, "
+"or shows a list to open one or all of the links."
+msgstr ""
+"Pulsado una vez, dice el enlace del portapapeles, o cuántos enlaces hay. "
+"Pulsado dos veces, abre el enlace, "
+"o muestra una lista para abrir uno o todos los enlaces."
+
+#. Label of the group of checkboxes that choose which kinds of links are opened.
+msgid "Kinds of links to open"
+msgstr "Tipos de enlaces que se abren"
+
+#. Checkbox for links that start with http://
+msgid "Links starting with &http://"
+msgstr "Enlaces que empiezan por &http://"
+
+#. Checkbox for links that start with https://
+msgid "Links starting with http&s://"
+msgstr "Enlaces que empiezan por http&s://"
+
+#. Checkbox for links that start with www. without http:// or https:// in front.
+msgid "Links starting with &www., such as www.example.com"
+msgstr "Enlaces que empiezan por &www., como www.example.com"
+
+#. Checkbox for TeamTalk links, which start with tt://
+msgid "&TeamTalk links starting with tt://"
+msgstr "Enlaces de &TeamTalk que empiezan por tt://"
+
+#. Title of the dialog that lists the links found in the clipboard.
+msgid "Links in clipboard"
+msgstr "Enlaces del portapapeles"
+
+#. Label of the list of links in the clipboard.
+msgid "&Links:"
+msgstr "&Enlaces:"
+
+#. Button that opens the selected link.
+msgid "&Open"
+msgstr "&Abrir"
+
+#. Button that opens every link in the list. {count} is the number of links.
+msgid "Open {count} links"
+msgstr "Abrir {count} enlaces"
+
+#. Button that closes the dialog without opening anything.
+msgid "&Close"
+msgstr "&Cerrar"

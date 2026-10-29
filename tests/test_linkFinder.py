@@ -7,7 +7,7 @@ import unittest
 sys.dont_write_bytecode = True
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "addon" / "globalPlugins" / "simpleLinkOpener"))
 
-from linkFinder import findLinks  # noqa: E402
+from linkFinder import displayLink, findLinks  # noqa: E402
 
 
 class FindLinksTests(unittest.TestCase):
@@ -88,6 +88,33 @@ class FindLinksTests(unittest.TestCase):
 
 	def test_wwwFollowsHttpsSetting(self):
 		self.assertEqual(findLinks("www.example.com", https=False, www=True), ["http://www.example.com"])
+
+	def test_ttLinkNeedsTtSetting(self):
+		link = "tt://example.com?tcpport=10333&udpport=10333&encrypted=0&username=guest&password=guest&channel=%2F"
+		self.assertEqual(findLinks(link), [])
+		self.assertEqual(findLinks("Join " + link + " now", tt=True), [link])
+		self.assertEqual(findLinks("https://a.com " + link, https=False, tt=True), [link])
+
+	def test_ttLinkEdgeCases(self):
+		self.assertEqual(findLinks("tt://", tt=True), [])
+		self.assertEqual(findLinks("Type tt:// first.", tt=True), [])
+		self.assertEqual(findLinks("TT://Example.com?tcpport=1", tt=True), ["TT://Example.com?tcpport=1"])
+		# Letters before tt:// make it part of another word, not a TeamTalk link.
+		self.assertEqual(findLinks("att://example.com", tt=True), [])
+
+	def test_ttLinkAloneKeepsItsLastCharacter(self):
+		link = "tt://example.com?tcpport=10333&username=me&password=secret!"
+		self.assertEqual(findLinks(link + "\r\n", tt=True), [link])
+		self.assertEqual(findLinks("Join " + link, tt=True), [link[:-1]])
+		self.assertEqual(findLinks("(tt://example.com?tcpport=10333).", tt=True), ["tt://example.com?tcpport=10333"])
+
+	def test_displayLinkHidesTtPasswords(self):
+		link = "TT://example.com?tcpport=10333&username=me&Password=secret&channel=%2F&chanpasswd=door"
+		self.assertEqual(
+			displayLink(link),
+			"TT://example.com?tcpport=10333&username=me&Password=&channel=%2F&chanpasswd=",
+		)
+		self.assertEqual(displayLink("https://example.com/?password=x"), "https://example.com/?password=x")
 
 	def test_linkInAngleBrackets(self):
 		self.assertEqual(findLinks("<https://example.com>"), ["https://example.com"])

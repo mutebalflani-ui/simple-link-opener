@@ -15,15 +15,27 @@ from logHandler import log
 from scriptHandler import getLastScriptRepeatCount, script
 import addonHandler
 
-from .linkFinder import findLinks
+from .linkFinder import displayLink, findLinks
 from .linksDialog import LinksDialog
 
 addonHandler.initTranslation()
 
+# One row per kind of link: the findLinks argument that allows it, its name in the configuration,
+# whether it is opened by default, and the label of its checkbox in the settings.
+# The settings, the checkboxes and the search for links all follow this table.
+LINK_KINDS = (
+	# Translators: Checkbox for links that start with http://
+	("http", "openHttp", True, _("Links starting with &http://")),
+	# Translators: Checkbox for links that start with https://
+	("https", "openHttps", True, _("Links starting with http&s://")),
+	# Translators: Checkbox for links that start with www. without http:// or https:// in front.
+	("www", "openWww", False, _("Links starting with &www., such as www.example.com")),
+	# Translators: Checkbox for TeamTalk links, which start with tt://
+	("tt", "openTt", False, _("&TeamTalk links starting with tt://")),
+)
+
 config.conf.spec["simpleLinkOpener"] = {
-	"openHttp": "boolean(default=True)",
-	"openHttps": "boolean(default=True)",
-	"openWww": "boolean(default=False)",
+	confKey: f"boolean(default={default})" for _kind, confKey, default, _label in LINK_KINDS
 }
 
 # Pause between links when opening several, so a browser that is still starting up receives every one.
@@ -38,16 +50,16 @@ def _openLink(link):
 		# Hands the link to Windows, which opens it in the default browser.
 		os.startfile(link)
 	except OSError:
-		log.error(f"Could not open {link}", exc_info=True)
+		log.error(f"Could not open {displayLink(link)}", exc_info=True)
 		# Translators: Announced when a link could not be opened. {link} is the link.
-		ui.message(_("Could not open {link}").format(link=link))
+		ui.message(_("Could not open {link}").format(link=displayLink(link)))
 
 
 def openLinks(links):
 	if len(links) > CONFIRM_OVER_LINKS:
 		answer = wx.MessageBox(
 			# Translators: Asks before opening many links. {count} is the number of links.
-			_("Open {count} links in the browser?").format(count=len(links)),
+			_("Open {count} links?").format(count=len(links)),
 			# Translators: Title of the question that asks before opening many links.
 			_("Simple Link Opener"),
 			wx.YES_NO | wx.NO_DEFAULT | wx.ICON_QUESTION,
@@ -72,10 +84,8 @@ def getClipboardLinks(allKinds=False):
 		# The clipboard is empty or holds something other than text.
 		log.debugWarning("No text in the clipboard", exc_info=True)
 		return []
-	if allKinds:
-		return findLinks(text, http=True, https=True, www=True)
 	conf = config.conf["simpleLinkOpener"]
-	return findLinks(text, http=conf["openHttp"], https=conf["openHttps"], www=conf["openWww"])
+	return findLinks(text, **{kind: allKinds or conf[confKey] for kind, confKey, _default, _label in LINK_KINDS})
 
 
 def disableInSecureMode(decoratedCls):
@@ -101,7 +111,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		# Translators: Describes the command in the Input gestures dialog.
 		description=_(
 			"Pressed once, says the link in the clipboard, or how many links there are. "
-			"Pressed twice, opens the link in the default browser, "
+			"Pressed twice, opens the link, "
 			"or shows a list to open one or all of the links."
 		),
 	)
@@ -120,7 +130,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 				ui.message(_("No link in clipboard"))
 		elif repeatCount == 0:
 			if len(links) == 1:
-				ui.message(links[0])
+				ui.message(displayLink(links[0]))
 			else:
 				# Translators: Announced when the clipboard has several links. {count} is the number of links.
 				ui.message(_("{count} links").format(count=len(links)))
@@ -144,26 +154,15 @@ class SimpleLinkOpenerPanel(SettingsPanel):
 		group = guiHelper.BoxSizerHelper(self, sizer=groupSizer)
 		sHelper.addItem(group)
 
-		# Translators: Checkbox for links that start with http://
-		self.httpCheckBox = wx.CheckBox(groupBox, label=_("Links starting with &http://"))
-		self.httpCheckBox.SetValue(conf["openHttp"])
-		group.addItem(self.httpCheckBox)
-
-		# Translators: Checkbox for links that start with https://
-		self.httpsCheckBox = wx.CheckBox(groupBox, label=_("Links starting with http&s://"))
-		self.httpsCheckBox.SetValue(conf["openHttps"])
-		group.addItem(self.httpsCheckBox)
-
-		self.wwwCheckBox = wx.CheckBox(
-			groupBox,
-			# Translators: Checkbox for links that start with www. without http:// or https:// in front.
-			label=_("Links starting with &www., such as www.example.com"),
-		)
-		self.wwwCheckBox.SetValue(conf["openWww"])
-		group.addItem(self.wwwCheckBox)
+		# The checkbox of each kind of link, by its name in the configuration.
+		self.checkBoxes = {}
+		for _kind, confKey, _default, label in LINK_KINDS:
+			checkBox = wx.CheckBox(groupBox, label=label)
+			checkBox.SetValue(conf[confKey])
+			group.addItem(checkBox)
+			self.checkBoxes[confKey] = checkBox
 
 	def onSave(self):
 		conf = config.conf["simpleLinkOpener"]
-		conf["openHttp"] = self.httpCheckBox.IsChecked()
-		conf["openHttps"] = self.httpsCheckBox.IsChecked()
-		conf["openWww"] = self.wwwCheckBox.IsChecked()
+		for confKey, checkBox in self.checkBoxes.items():
+			conf[confKey] = checkBox.IsChecked()
